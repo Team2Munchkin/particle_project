@@ -15,7 +15,11 @@ def test_best_positions(particle_list, expected_best_pairs):
 
 @pytest.mark.parametrize('two_particles_positions, expected_distance',
      [
-         ([ [0.,0.], [0.,1.] ], 1 )
+         ([ [0.], [0.] ], 0 ),
+         ([ [0.], [1.] ], 1 ),
+         ([ [0.,0.], [0.,1.] ], 1 ),
+         ([ [4.,0.], [0.,3.] ], 5 ),
+         ([ [2.,0.,2.], [0.,3.,0.] ], 17**0.5 )
      ])
 def test_distance(two_particles_positions, expected_distance):
     pairs_finder = BestPairsFinder()
