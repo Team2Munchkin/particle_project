@@ -25,4 +25,4 @@ class BestPairsFinder:
     #     return best_solution
 
     def calc_dist_of_two_particles(self, particle1, particle2):
-        return numpy.linalg.norm(particle1 - particle2)
+        return numpy.linalg.norm(numpy.asarray(particle1) - numpy.asarray(particle2))

@@ -13,6 +13,15 @@ def test_best_positions(particle_list, expected_best_pairs):
     pairs_finder = BestPairsFinder()
     assert pairs_finder.find_best_pairs(particle_positions=particle_list) == expected_best_pairs
 
+@pytest.mark.parametrize('two_particles_positions, expected_distance',
+     [
+         ([ [0.,0.], [0.,1.] ], 1 )
+     ])
+def test_distance(two_particles_positions, expected_distance):
+    pairs_finder = BestPairsFinder()
+    assert pairs_finder.calc_dist_of_two_particles(
+        particle1=two_particles_positions[0], particle2=two_particles_positions[1]
+        ) == expected_distance
 
 class TestBestPairsFinder(TestCase):
 
