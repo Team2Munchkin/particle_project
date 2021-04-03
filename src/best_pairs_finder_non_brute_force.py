@@ -25,3 +25,9 @@ class BestPairsFinderNonBruteForce:
             for pairs in PairsList:
                 pairs.sort()
         return PairsList
+
+    def obtain_energy( self, PairsList ):
+        energy = 0
+        for pairs in PairsList:
+            energy += self.calc_dist_of_two_particles( pairs[0], pairs[1] )
+        return energy
