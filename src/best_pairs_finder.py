@@ -24,14 +24,23 @@ class BestPairsFinder:
             pairlist.append(distlist[2] + distlist[3])
 
             if pairlist.index(min(pairlist)) == 0:
-                return [[particle_positions[0], particle_positions[1]],
+                result = [[particle_positions[0], particle_positions[1]],
                         [particle_positions[2], particle_positions[3]]]
             if pairlist.index(min(pairlist)) == 1:
-                return [[particle_positions[0], particle_positions[2]],
+                result = [[particle_positions[0], particle_positions[2]],
                         [particle_positions[1], particle_positions[3]]]
             if pairlist.index(min(pairlist)) == 2:
-                return [[particle_positions[0], particle_positions[3]],
+                result = [[particle_positions[0], particle_positions[3]],
                         [particle_positions[1], particle_positions[2]]]
+
+            for i in [0, 1]:
+                if result[i][0][0] > result[i][1][0]:
+                    result[i].reverse()
+            if result[0][0][0] > result[1][0][0]:
+                result.reverse()
+
+            return result
+
 
             #testlist = []
             #for i in particle_positions:
