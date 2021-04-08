@@ -1,4 +1,4 @@
-from particle_generator import *
+from src.particle_generator import *
 import pytest
 
 def test_do_nothing():

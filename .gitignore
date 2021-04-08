@@ -1,1 +1,3 @@
 /.github/
+/test/unit_test/.pytest_cache/
+/.idea/
