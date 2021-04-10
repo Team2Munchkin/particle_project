@@ -5,22 +5,50 @@ import pytest
 @pytest.mark.parametrize('particle_list, expected_best_pairs',
      [
          ([], [[]]),
+         # 2 particles - 2 dimensions
          ([[0., -1.], [1., 2.]], [[[0., -1.], [1., 2.]]]),
          ([[1., 2.], [0., -1.]], [[[0., -1.], [1., 2.]]]),
          ([[-1, 0.], [0., -1.]], [[[-1., 0.], [0., -1.]]]),
          ([[0., 1.], [0., -1.]] ,[[[0,-1],[0,1]]] ),
+         # 4 particles - 1 dimension
          ([[0],[1],[2],[3]],[[[0],[1]],[[2],[3]]] ),
          ([[0],[2],[1],[3]],[[[0],[1]],[[2],[3]]] ),
+         # 4 particles - 2 dimensions
          ([[0., 0.], [1., 1.], [9., 9], [10., 10.]],
           [[[0., 0.], [1., 1.]], [[9., 9.], [10., 10]]]),
          ([[0., 0.], [9., 9.], [1., 1.], [10., 10.]],
           [[[0., 0.], [1., 1.]], [[9., 9.], [10., 10]]]),
+         # 4 particles - 3 dimensions
          ([[0,0,0],[10,20,30],[1,3,5],[10,20,31]],
-          [[[0,0,0],[1,3,5]],[[10,20,30],[10,20,31]]])
+          [[[0,0,0],[1,3,5]],[[10,20,30],[10,20,31]]]),
+         # 6 particles - 1 dimension
+         ([[0],[6],[1],[3],[4],[5]], [ [[0],[1]], [[3],[4]], [[5],[6]] ] ),
+         ([[-3],[3],[-1],[1],[0],[2]], [ [[-3],[-1]], [[0],[1]], [[2],[3]] ] ),
+         # 6 particles - 2 dimensions
+         ([[0,0],[6,6],[1,1],[3,3],[4,4],[5,5]], [ [[0,0],[1,1]], [[3,3],[4,4]], [[5,5],[6,6]] ] ),
+         # 6 particles - 3 dimensions
+         ( [[0,0,0],[6,6,6],[1,1,1],[3,3,3],[4,4,4],[5,5,5]],
+           [ [[0,0,0],[1,1,1]], [[3,3,3],[4,4,4]], [[5,5,5],[6,6,6]] ] ),
+         # 8 particles - 1 dimension
+         ( [ [-8],[-15],[-7],[4],[3],[1],[-20],[0] ],
+           [ [[-20],[-15]], [[-8],[-7]], [[0],[1]], [[3],[4]] ]
+         )
      ])
 def test_best_positions(particle_list, expected_best_pairs):
     pairs_finder = BestPairs()
     assert pairs_finder.find_best_pairs(particle_positions=particle_list) == expected_best_pairs
+
+@pytest.mark.parametrize('number_particles, expected_result',
+    [
+        (2, 1),
+        (4, 3),
+        (6, 15),
+        (8, 105)
+    ])
+
+def test_number_different_pairs( number_particles, expected_result):
+    pairs_finder = BestPairs()
+    assert pairs_finder.number_different_pairs( number_particles ) == expected_result
 
 @pytest.mark.parametrize('two_particles_positions, expected_distance',
      [
