@@ -1,1 +1,3 @@
 /.github/
+/site-packages/
+/.pytest_cache/
