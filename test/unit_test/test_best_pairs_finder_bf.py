@@ -1,4 +1,4 @@
-from unittest import TestCase, skip
+#from unittest import TestCase, skip
 from src.best_pairs_finder import BestPairsFinder
 import pytest
 
@@ -14,6 +14,10 @@ import pytest
           [[[0., 9.], [1., 10.]], [[9., 0.], [10., 1.]]]),
          ([[0., 321.], [3., 53.], [22., 63.], [1., 350.]],
           [[[0., 321.], [1., 350.]], [[3., 53.], [22., 63.]]]),
+         ([[0., 2.], [4., 6.], [8., 10.], [12., 14.], [16., 18.], [20., 22.]],
+          [[[0., 2.], [4., 6.]], [[8., 10.], [12., 14.]], [[16., 18.], [20., 22.]]]),
+         ([[20., 22.], [4., 6.], [16., 18.], [12., 14.], [8., 10.], [0., 2.]],
+          [[[0., 2.], [4., 6.]], [[8., 10.], [12., 14.]], [[16., 18.], [20., 22.]]])
 
      ])
 def test_best_positions(particle_list, expected_best_pairs):
@@ -34,10 +38,10 @@ def test_distance(two_particles_positions, expected_distance):
         particle1=two_particles_positions[0], particle2=two_particles_positions[1]
         ) == expected_distance
 
-class TestBestPairsFinder(TestCase):
+#class TestBestPairsFinder(TestCase):
 
-    def test_nothing(self):
-        self.assertTrue(True)
+#    def test_nothing(self):
+#        self.assertTrue(True)
     #
     # def test_zero_particles(self):
     #     pairs_finder = BestPairsFinder()
