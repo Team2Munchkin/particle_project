@@ -3,13 +3,14 @@ from numpy.random import seed, rand, randint
 
 class BestPairsFinderNonBruteForce:
 
-    def find_best_pairs(self, particle_positions):
+    def find_best_pairs(self, particle_positions, MAX_ITERATIONS = 200):
         """
         Example:
         if particles_positions = [[0, 0], [1, 1], [20, 20], [21, 21]]
         should return [[[0, 0], [1, 1]], [[20, 20],[21, 21]]]  (or equivalent shufflings)
         """
-        if len(particle_positions) >= 4:
+        number_particles = len(particle_positions)
+        if number_particles >= 4:
             # generate an initial list of pairs from the array of positions
             list1 = particle_positions[::2]
             list2 = particle_positions[1::2]
@@ -21,18 +22,19 @@ class BestPairsFinderNonBruteForce:
             # save the current list as the best list
             min_energy = energy
             BestPairsList = PairsList.copy()
-            activation_energy = 0.3*energy
+            activation_energy = 10*energy
+            # verify if the activation energy is not too small
             eps = 1e-6
             if( activation_energy < eps ):
                 activation_energy = eps
 
             # iterate over pairs to eventually exchange two particles from neighboring pairs
-            MAX_ITERATIONS = 10
+            MAX_ITERATIONS = int(4*self.number_different_pairs( number_particles ))
+            #MAX_ITERATIONS = 100
             for counter in range( MAX_ITERATIONS ):
                 # randomly exchange two particles
                 for i in range( len(PairsList)-1 ):
                     NewPairsList = self.exchange_neighbors( i, PairsList )
-                    #print( counter, i, NewPairsList )
                     # check the energy for the new configuration
                     new_energy = self.obtain_energy( NewPairsList )
                     if ( new_energy < energy ):
@@ -71,6 +73,17 @@ class BestPairsFinderNonBruteForce:
         for pairs in PairsList:
             energy += self.calc_dist_of_two_particles( pairs[0], pairs[1] )
         return energy
+
+    def number_different_pairs( self, n ):
+        # check if n is even
+        if n%2:
+            return -1
+        prod = 1
+        counter = 3
+        while counter < n:
+            prod = prod*counter
+            counter += 2
+        return prod
 
     def exchange_neighbors( self, n, PairsList ):
         # first pair
