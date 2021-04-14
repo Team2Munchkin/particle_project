@@ -39,4 +39,5 @@ jobs:
         pytest
     - name: Deploy
       run: |
-        git pull mkdocs gh-deploy
+        mkdocs build
+        mkdocs gh-deploy
