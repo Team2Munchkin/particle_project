@@ -44,7 +44,7 @@ import pytest
      ])
 def test_best_positions(particle_list, expected_best_pairs):
     pairs_finder = BestPairs()
-    assert pairs_finder.find_best_pairs(particle_positions=particle_list) == expected_best_pairs
+    assert pairs_finder.find_best_pairs(particle_positions=particle_list,MAX_ITERATIONS=300) == expected_best_pairs
 
 @pytest.mark.parametrize('number_particles, expected_result',
     [
