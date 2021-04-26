@@ -58,8 +58,10 @@ class ParseArgs:
 
 def check_if_data_contain_only_pairs(list_of_pairs):
     for pair in list_of_pairs:
+        print(pair,len(pair))
         if len(pair) != 2:
             raise RuntimeError('data must contains a list with pairs')
+    return True
 
 def read_input(fname,dtype=float):
     data = np.loadtxt(fname=fname,dtype=dtype)
