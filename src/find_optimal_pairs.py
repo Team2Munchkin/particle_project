@@ -50,7 +50,7 @@ class ParseArgs:
         if self.arguments_as_dictionary['steps'] < 0:
             raise RuntimeError('Number of Monte-Carlo steps must be positive.')
         # check if the activation energy is positive
-        if (self.arguments_as_dictionary['energy'] < 0) and\ 
+        if (self.arguments_as_dictionary['energy'] < 0) and\
             (self.arguments_as_dictionary['energy'] != -1):
             raise RuntimeError('Number of Monte-Carlo steps must be positive.')
 

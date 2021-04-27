@@ -22,7 +22,6 @@ class BestPairsFinderNonBruteForce:
 
             # save the current list as the best list
             min_energy = energy
-            print(min_energy)
             BestPairsList = PairsList.copy()
             if ( activation_energy == -1 ):
                 activation_energy = energy
@@ -45,7 +44,6 @@ class BestPairsFinderNonBruteForce:
                         energy = new_energy
                         PairsList = NewPairsList.copy()
                         if( new_energy < min_energy ):
-                            print('minimum')
                             min_energy = new_energy
                             BestPairsList = NewPairsList.copy()
                     else:
@@ -57,7 +55,6 @@ class BestPairsFinderNonBruteForce:
                             energy = new_energy
 
             # decide if the new configation is accepted
-            print(min_energy)
             return self.sort_solution( BestPairsList )
         return self.sort_solution( [particle_positions] )
 
