@@ -7,7 +7,7 @@ This script can be called from a terminal. It reads an input file with the coord
 
 ## Example of use
 
-```python src/find_optimal_pairs.py -i input -o output -m MC -s 20```
+```python src/find_optimal_pairs.py -i input -o output -m MC -s 20 -e 10```
 
 * `-i`: provides the name of the input file. In our example, it is `input`. Conditions:
   * the input is a **text file** with the position of all the particles
@@ -16,6 +16,7 @@ This script can be called from a terminal. It reads an input file with the coord
 * `-o`: name of the output file.
 * `-m`: method to find the solution. Possible choices are `MC`, `bf`, `Monte_Carlo` or `brute_force`
 * `-s`: number of Monte-Carlo steps. It must be a **positive integer**.
+* `-e`: activation energy for the Monte-Carlo algorithm. It must be a **positive number**. The default value of -1 makes the *energy* of the first configuration as the activation energy.
 
 ### Examples of input files
 #### Six particles in one dimension
