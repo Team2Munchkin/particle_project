@@ -11,7 +11,8 @@ class ParseArgs:
             'input': arg.i[0],
             'output': arg.o[0],
             'method': arg.m,
-            'steps': arg.s
+            'steps': arg.s,
+            'energy': arg.e
         }
         return dict
 
@@ -34,6 +35,8 @@ class ParseArgs:
             help='method. Possible choices: MC, bf, Monte_Carlo or brute_force' )
         parser.add_argument('-s', metavar='--steps', type=int,
             default=20, help='number of Monte-Carlo steps')
+        parser.add_argument('-e', metavar='--energy', type=float,
+            default=-1, help='Activation energy for Monte-Carlo')
 
         args = parser.parse_args()
 
@@ -46,6 +49,10 @@ class ParseArgs:
         # check if the number of steps is positive
         if self.arguments_as_dictionary['steps'] < 0:
             raise RuntimeError('Number of Monte-Carlo steps must be positive.')
+        # check if the activation energy is positive
+        if (self.arguments_as_dictionary['energy'] < 0) and
+            (self.arguments_as_dictionary['energy'] != -1):
+            raise RuntimeError('Number of Monte-Carlo steps must be positive.')
 
     def name_of_input(self):
         return self.arguments_as_dictionary['input']
@@ -56,9 +63,14 @@ class ParseArgs:
     def name_of_method(self):
         return self.arguments_as_dictionary['method']
 
+    def number_of_steps(self):
+        return self.arguments_as_dictionary['steps']
+
+    def energy(self):
+        return self.arguments_as_dictionary['energy']
+
 def check_if_data_contain_only_pairs(list_of_pairs):
     for pair in list_of_pairs:
-        print(pair,len(pair))
         if len(pair) != 2:
             raise RuntimeError('data must contains a list with pairs')
     return True
@@ -82,12 +94,14 @@ if __name__ == '__main__':
     input = arguments.name_of_input()
     output = arguments.name_of_output()
     method = arguments.name_of_method()
+    max_steps = arguments.number_of_steps()
+    energy = arguments.energy()
     # Read input
     positions = read_input(fname=input,dtype=float)
     # Find best pairs
     pairs_finder = BestPairs()
     pairs = pairs_finder.find_best_pairs( \
-        particle_positions=positions, MAX_ITERATIONS=20 )
+        particle_positions=positions, MAX_ITERATIONS=max_steps,
+        activation_energy=energy )
     # Write to output
     write_output(fname=output,data=pairs)
-    #print(pairs)
