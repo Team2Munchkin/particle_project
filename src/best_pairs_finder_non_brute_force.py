@@ -4,7 +4,7 @@ from numpy.random import seed, rand, randint
 class BestPairsFinderNonBruteForce:
 
     def find_best_pairs(self, particle_positions, MAX_ITERATIONS = -1, \
-            seed_for_np=None ):
+            seed_for_np=None, activation_energy=-1 ):
         """
         Example:
         if particles_positions = [[0, 0], [1, 1], [20, 20], [21, 21]]
@@ -22,8 +22,10 @@ class BestPairsFinderNonBruteForce:
 
             # save the current list as the best list
             min_energy = energy
+            print(min_energy)
             BestPairsList = PairsList.copy()
-            activation_energy = 10*energy
+            if ( activation_energy == -1 ):
+                activation_energy = energy
             # verify if the activation energy is not too small
             eps = 1e-6
             if( activation_energy < eps ):
@@ -34,7 +36,7 @@ class BestPairsFinderNonBruteForce:
                 MAX_ITERATIONS = int(self.number_different_pairs( number_particles ))
             for counter in range( MAX_ITERATIONS ):
                 # randomly exchange two particles
-                for i in range( len(PairsList)-1 ):
+                for i in range( len(PairsList) ):
                     NewPairsList = self.exchange_neighbors( i, PairsList, \
                         seed_for_np=seed_for_np )
                     # check the energy for the new configuration
@@ -43,6 +45,7 @@ class BestPairsFinderNonBruteForce:
                         energy = new_energy
                         PairsList = NewPairsList.copy()
                         if( new_energy < min_energy ):
+                            print('minimum')
                             min_energy = new_energy
                             BestPairsList = NewPairsList.copy()
                     else:
@@ -51,8 +54,10 @@ class BestPairsFinderNonBruteForce:
                         prob = numpy.exp( -delta_e/activation_energy )
                         if( rand() < prob ):
                             PairsList = NewPairsList.copy()
+                            energy = new_energy
 
             # decide if the new configation is accepted
+            print(min_energy)
             return self.sort_solution( BestPairsList )
         return self.sort_solution( [particle_positions] )
 
@@ -91,7 +96,8 @@ class BestPairsFinderNonBruteForce:
         # first pair
         f0, f1 = PairsList[n]
         # second pair
-        s0, s1 = PairsList[n+1]
+        index_second_pair = (n+1)%len(PairsList)
+        s0, s1 = PairsList[index_second_pair]
         # copy of PairsList
         NewPairsList = PairsList.copy()
         # randomly pick two integers
@@ -100,15 +106,15 @@ class BestPairsFinderNonBruteForce:
         if i==0:
             if j==0:
                 NewPairsList[n] = [f1,s0]
-                NewPairsList[n+1] = [f0,s1]
+                NewPairsList[index_second_pair] = [f0,s1]
             else:
                 NewPairsList[n] = [f1,s1]
-                NewPairsList[n+1] = [f0,s0]
+                NewPairsList[index_second_pair] = [f0,s0]
         else:
             if j==0:
                 NewPairsList[n] = [f0,s0]
-                NewPairsList[n+1] = [f1,s1]
+                NewPairsList[index_second_pair] = [f1,s1]
             else:
                 NewPairsList[n] = [f0,s1]
-                NewPairsList[n+1] = [f1,s0]
+                NewPairsList[index_second_pair] = [f1,s0]
         return NewPairsList
