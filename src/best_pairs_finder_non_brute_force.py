@@ -3,7 +3,8 @@ from numpy.random import seed, rand, randint
 
 class BestPairsFinderNonBruteForce:
 
-    def find_best_pairs(self, particle_positions, MAX_ITERATIONS = 200):
+    def find_best_pairs(self, particle_positions, MAX_ITERATIONS = -1, \
+            seed_for_np=None ):
         """
         Example:
         if particles_positions = [[0, 0], [1, 1], [20, 20], [21, 21]]
@@ -29,12 +30,13 @@ class BestPairsFinderNonBruteForce:
                 activation_energy = eps
 
             # iterate over pairs to eventually exchange two particles from neighboring pairs
-            MAX_ITERATIONS = int(4*self.number_different_pairs( number_particles ))
-            #MAX_ITERATIONS = 100
+            if MAX_ITERATIONS == -1:
+                MAX_ITERATIONS = int(self.number_different_pairs( number_particles ))
             for counter in range( MAX_ITERATIONS ):
                 # randomly exchange two particles
                 for i in range( len(PairsList)-1 ):
-                    NewPairsList = self.exchange_neighbors( i, PairsList )
+                    NewPairsList = self.exchange_neighbors( i, PairsList, \
+                        seed_for_np=seed_for_np )
                     # check the energy for the new configuration
                     new_energy = self.obtain_energy( NewPairsList )
                     if ( new_energy < energy ):
@@ -44,7 +46,7 @@ class BestPairsFinderNonBruteForce:
                             min_energy = new_energy
                             BestPairsList = NewPairsList.copy()
                     else:
-                        seed()
+                        seed( seed_for_np )
                         delta_e = new_energy-energy
                         prob = numpy.exp( -delta_e/activation_energy )
                         if( rand() < prob ):
@@ -85,7 +87,7 @@ class BestPairsFinderNonBruteForce:
             counter += 2
         return prod
 
-    def exchange_neighbors( self, n, PairsList ):
+    def exchange_neighbors( self, n, PairsList, seed_for_np=None ):
         # first pair
         f0, f1 = PairsList[n]
         # second pair
@@ -93,7 +95,7 @@ class BestPairsFinderNonBruteForce:
         # copy of PairsList
         NewPairsList = PairsList.copy()
         # randomly pick two integers
-        seed( )
+        seed( seed_for_np )
         i, j = randint( 0, 2, size=2 )
         if i==0:
             if j==0:
