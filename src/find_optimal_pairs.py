@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 import numpy as np
-from src.best_pairs_finder_non_brute_force import BestPairsFinderNonBruteForce as BestPairs
+from src.best_pairs_finder_non_brute_force import BestPairsFinderNonBruteForce
+from src.best_pairs_finder import BestPairsFinder
 
 class ParseArgs:
     def convert_to_dictionary( self, arg ):
@@ -98,10 +99,17 @@ if __name__ == '__main__':
     energy = arguments.energy()
     # Read input
     positions = read_input(fname=input,dtype=float)
-    # Find best pairs
-    pairs_finder = BestPairs()
-    pairs = pairs_finder.find_best_pairs( \
-        particle_positions=positions, MAX_ITERATIONS=max_steps,
-        activation_energy=energy )
+    # Find best pairs following the specified method
+    if( method == 'Monte_Carlo' or method == 'MC' ):
+        pairs_finder = BestPairsFinderNonBruteForce()
+        pairs = pairs_finder.find_best_pairs( \
+            particle_positions=positions, MAX_ITERATIONS=max_steps,
+            activation_energy=energy )
+    elif ( method == 'brute_force' or method == 'bf' ):
+        pairs_finder = BestPairsFinder()
+        pairs = pairs_finder.find_best_pairs( \
+            particle_positions=positions )
+    else:
+        raise RuntimeError('Method to find best pairs has not been defined')
     # Write to output
     write_output(fname=output,data=pairs)
